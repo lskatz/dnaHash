@@ -3,10 +3,11 @@ A quick and dirty DNA hashing algorithm
 
 # Usage
 
+```
 dnaHash.pl: hashes DNA with a unique algorithm
   Usage: dnaHash.pl [options] file1.fasta...
   --help   This useful help menu
-
+```
 
 # Algorithm
 
