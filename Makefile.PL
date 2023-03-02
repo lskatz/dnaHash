@@ -14,7 +14,7 @@ my $preop = 'true';
   #'pod2text README.pod | tee $(DISTVNAME)/README > README';
 
 WriteMakefile1(
-  NAME         => 'template',
+  NAME         => 'dnaHash',
   VERSION_FROM => 'scripts/dnaHash.pl',
   AUTHOR => q{Lee S. Katz <gzu2@cdc.gov>},
   EXE_FILES    => [
