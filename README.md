@@ -35,5 +35,61 @@ Fast and straightforward
 # Disadvantages
 
 Collisions will be frequent.
-Some quick tests on the Campylobacter cgMLST scheme show that there are collisions in 973 loci out of 2794.
+
+## Campylobacter cgMLST
+
+Some quick tests on the Campylobacter cgMLST scheme show that there are collisions in 973 out of 2794 loci.
+In 684 of those loci, there are at least three alleles that collide.
+
+| at least X | number of loci with collisions in Campylobacter wgMLST database |
+|------------|--------------------------------|
+| 2          | 973 |
+| 3          | 684 |
+| 4          | 472 |
+| 5          | 292 |
+| 6          | 158 |
+| 7          | 88  |
+| 8          | 49  |
+| 9          | 25  |
+| 10         | 17  |
+| 11         | 10  |
+| 12         | 5   |
+| 13         | 2   |
+| 14         | 2   |
+| 15         | 2   |
+| 16         | 2   |
+| 17         | 2   |
+| 18         | 1   |
+| 19         | 0   |
+| 20         | 0   |
+
+## Salmonela 7-gene MLST
+
+No collisions found for this scheme
+
+## Salmonella wgMLST database
+
+contains 8558 loci
+
+| at least X | number of loci with collisions in Salmonella wgMLST database |
+|------------|--------------------------------|
+| 2          | 4628 |
+| 3          | 4006 |
+| 4          | 3741 |
+| 5          | 3741 |
+| 6          | 3566 |
+| 7          | 3437 |
+| 8          | 3334 |
+| 9          | 3217 |
+| 10         | 3072 |
+| 11         | 2542 |
+| 12         | 2389 |
+| 13         | 2253 |
+| 14         | 2109 |
+| 15         | 1961 |
+| 16         | 1828 |
+| 17         | 1705 |
+| 18         | 1599 |
+| 19         | 1468 |
+| 20         | 1314 |
 
