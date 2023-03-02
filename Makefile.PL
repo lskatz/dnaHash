@@ -15,10 +15,10 @@ my $preop = 'true';
 
 WriteMakefile1(
   NAME         => 'template',
-  VERSION_FROM => 'scripts/template.pl',
+  VERSION_FROM => 'scripts/dnaHash.pl',
   AUTHOR => q{Lee S. Katz <gzu2@cdc.gov>},
   EXE_FILES    => [
-    "scripts/template.pl",
+    "scripts/dnaHash.pl",
   ],
   PREREQ_PM    => {
     # Core modules
@@ -26,12 +26,14 @@ WriteMakefile1(
     'Data::Dumper'   => 0,
     'version'        => 0.77,
     'Getopt::Long'   => 0,
+
+    'Bio::SeqIO'     => 0,
   },
   BUILD_REQUIRES => {
     'Test::More'     => 0.47,
   },
   MIN_PERL_VERSION => '5.12.0',
-  LICENSE          => "gpl_3",
+  LICENSE          => "mit",
   dist=>{
     COMPRESS => "gzip -9f",
     SUFFIX   => "gz",
@@ -42,8 +44,8 @@ WriteMakefile1(
     resources => {
       repository => {
         type => 'git',
-        url => 'git://github.com/lskatz/template.git',
-        web => 'https://github.com/lskatz/template',
+        url => 'git://github.com/lskatz/dnahash.git',
+        web => 'https://github.com/lskatz/dnahash',
       },
     },
   },
