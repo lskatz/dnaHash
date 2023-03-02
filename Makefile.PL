@@ -26,8 +26,6 @@ WriteMakefile1(
     'Data::Dumper'   => 0,
     'version'        => 0.77,
     'Getopt::Long'   => 0,
-
-    'Bio::SeqIO'     => 0,
   },
   BUILD_REQUIRES => {
     'Test::More'     => 0.47,

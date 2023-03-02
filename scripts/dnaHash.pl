@@ -6,8 +6,6 @@ use Data::Dumper;
 use Getopt::Long;
 use File::Basename qw/basename/;
 
-use Bio::SeqIO;
-
 use version 0.77;
 our $VERSION = '0.1.1';
 
@@ -25,10 +23,11 @@ sub main{
   my $ntFlags = ntFlags($settings);
 
   for my $fasta(@ARGV){
-    my $in = Bio::SeqIO->new(-file=>$fasta);
-    while(my $seq = $in->next_seq){
-      my $int = dnaHash($seq->seq, $ntFlags, $settings);
-      print join("\t", $seq->id, $int)."\n";
+    open(my $seqFh, "<", "$fasta") or die "ERROR: could not open $fasta for reading: $!";
+    my @aux = undef;
+    while ( my ($id, $seq, undef) = readfq($seqFh, \@aux)) {
+      my $int = dnaHash($seq, $ntFlags, $settings);
+      print join("\t", $id, $int)."\n";
     }
   }
 
@@ -70,6 +69,51 @@ sub ntFlags{
     $flag{$order[$power]} = 2**$power;
   }
   return \%flag;
+}
+
+# Read fq subroutine from Andrea which was inspired by lh3
+sub readfq {
+    my ($fh, $aux) = @_;
+    @$aux = [undef, 0] if (!(@$aux));	# remove deprecated 'defined'
+    return if ($aux->[1]);
+    if (!defined($aux->[0])) {
+        while (<$fh>) {
+            chomp;
+            if (substr($_, 0, 1) eq '>' || substr($_, 0, 1) eq '@') {
+                $aux->[0] = $_;
+                last;
+            }
+        }
+        if (!defined($aux->[0])) {
+            $aux->[1] = 1;
+            return;
+        }
+    }
+    my $name = /^.(\S+)/? $1 : '';
+    my $comm = /^.\S+\s+(.*)/? $1 : ''; # retain "comment"
+    my $seq = '';
+    my $c;
+    $aux->[0] = undef;
+    while (<$fh>) {
+        chomp;
+        $c = substr($_, 0, 1);
+        last if ($c eq '>' || $c eq '@' || $c eq '+');
+        $seq .= $_;
+    }
+    $aux->[0] = $_;
+    $aux->[1] = 1 if (!defined($aux->[0]));
+    return ($name, $seq) if ($c ne '+');
+    my $qual = '';
+    while (<$fh>) {
+        chomp;
+        $qual .= $_;
+        if (length($qual) >= length($seq)) {
+            $aux->[0] = undef;
+            return ($name, $seq, $comm, $qual);
+        }
+    }
+    $aux->[1] = 1;
+    return ($name, $seq, $comm);
 }
 
 sub usage{
