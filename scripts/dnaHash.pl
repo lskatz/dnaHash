@@ -14,7 +14,7 @@ use Math::BigInt;
 use MIME::Base64;
 
 use version 0.77;
-our $VERSION = '0.2.2';
+our $VERSION = '0.2.3';
 
 local $0 = basename $0;
 sub logmsg{local $0=basename $0; print STDERR "$0: @_\n";}
@@ -22,7 +22,11 @@ exit(main());
 
 sub main{
   my $settings={};
-  GetOptions($settings,qw(offset=i help)) or die $!;
+  GetOptions($settings,qw(offset=i help version)) or die $!;
+  if($$settings{version}){
+    print "$0 $VERSION\n";
+    return 0;
+  }
   usage() if(!@ARGV || $$settings{help});
 
   # Get different powers of 2 for different nucleotides
