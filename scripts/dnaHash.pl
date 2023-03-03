@@ -9,11 +9,12 @@ use Data::Dumper;
 use Getopt::Long;
 use File::Basename qw/basename/;
 use List::Util qw/sum/;
-use bigint;
+#use bigint;
+use Math::BigInt;
 use MIME::Base64;
 
 use version 0.77;
-our $VERSION = '0.2.1';
+our $VERSION = '0.2.2';
 
 local $0 = basename $0;
 sub logmsg{local $0=basename $0; print STDERR "$0: @_\n";}
@@ -21,7 +22,7 @@ exit(main());
 
 sub main{
   my $settings={};
-  GetOptions($settings,qw(help)) or die $!;
+  GetOptions($settings,qw(offset=i help)) or die $!;
   usage() if(!@ARGV || $$settings{help});
 
   # Get different powers of 2 for different nucleotides
@@ -35,7 +36,9 @@ sub main{
   # Median allele length is something like 78000 nt
   # Rule of thumb is 800nt for an average gene length.
   # However for the sake of speed, I am lowering it to 100 for now.
-  my $posCoefficientOffset = 2**100;
+  my $offset = $$settings{offset} || 100;
+  my $posCoefficientOffset = Math::BigInt->new(2**$offset);
+  #my $posCoefficientOffset = 2**$offset;
 
   for my $fasta(@ARGV){
     open(my $seqFh, "<", "$fasta") or die "ERROR: could not open $fasta for reading: $!";
@@ -140,6 +143,8 @@ sub readfq {
 sub usage{
   print "$0: hashes DNA with a unique algorithm
   Usage: $0 [options] file1.fasta...
+  --offset A larger number helps avoid collisions in hashes [default:100]
+           However, a number > 100 seems to slow this script significantly.
   --help   This useful help menu
   \n";
   exit 0;
