@@ -13,7 +13,7 @@ use bigint;
 use MIME::Base64;
 
 use version 0.77;
-our $VERSION = '0.2.0';
+our $VERSION = '0.2.1';
 
 local $0 = basename $0;
 sub logmsg{local $0=basename $0; print STDERR "$0: @_\n";}
