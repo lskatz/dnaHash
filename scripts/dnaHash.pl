@@ -1,13 +1,19 @@
 #!/usr/bin/env perl 
 
+# Need new perl for bigint->to_hex
+use 5.30.0;
+
 use warnings;
 use strict;
 use Data::Dumper;
 use Getopt::Long;
 use File::Basename qw/basename/;
+use List::Util qw/sum/;
+use bigint;
+use MIME::Base64;
 
 use version 0.77;
-our $VERSION = '0.1.1';
+our $VERSION = '0.2.0';
 
 local $0 = basename $0;
 sub logmsg{local $0=basename $0; print STDERR "$0: @_\n";}
@@ -21,13 +27,24 @@ sub main{
   # Get different powers of 2 for different nucleotides
   # before starting any heavy computation.
   my $ntFlags = ntFlags($settings);
+  
+  # $posCoefficientOffset is set to approximately 2^length of a long gene
+  # to help avoid collisions.
+  # Longest Campy allele is 4285203 nt
+  # Longest Salm allele is 27703306 nt
+  # Median allele length is something like 78000 nt
+  # Rule of thumb is 800nt for an average gene length.
+  # However for the sake of speed, I am lowering it to 100 for now.
+  my $posCoefficientOffset = 2**100;
 
   for my $fasta(@ARGV){
     open(my $seqFh, "<", "$fasta") or die "ERROR: could not open $fasta for reading: $!";
     my @aux = undef;
     while ( my ($id, $seq, undef) = readfq($seqFh, \@aux)) {
-      my $int = dnaHash($seq, $ntFlags, $settings);
-      print join("\t", $id, $int)."\n";
+      my $int = dnaHash($seq, $ntFlags, $posCoefficientOffset, $settings);
+      my $b64 = encode_base64($int);
+      chomp($b64);
+      print join("\t", $id, $b64)."\n";
     }
   }
 
@@ -39,15 +56,19 @@ sub main{
 # with the flag of the nucleotide (A=>1, C=>2,...).
 # Each product is summed across the DNA sequence.
 sub dnaHash{
-  my($dna, $ntFlags, $settings) = @_;
+  my($dna, $ntFlags, $posCoefficientOffset, $settings) = @_;
 
-  my $productSum = 0;
+  my @product = ();
+  #my $productSum = 0;
   my $length = length($dna);
   for(my $i=0; $i<$length; $i++){
     my $nt = substr($dna, $i, 1);
-    my $product = $$ntFlags{$nt} * ($i+1);
-    $productSum += $product;
+    my $posCoefficient = $i + $posCoefficientOffset;
+    my $product = $$ntFlags{$nt} * $posCoefficient;
+    #$productSum += $product;
+    push(@product, $product);
   }
+  my $productSum = sum(@product);
   return $productSum;
 }
 

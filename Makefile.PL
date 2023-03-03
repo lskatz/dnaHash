@@ -26,11 +26,13 @@ WriteMakefile1(
     'Data::Dumper'   => 0,
     'version'        => 0.77,
     'Getopt::Long'   => 0,
+    'MIME::Base64'   => 0,
+    'bigint'         => 0,
   },
   BUILD_REQUIRES => {
     'Test::More'     => 0.47,
   },
-  MIN_PERL_VERSION => '5.12.0',
+  MIN_PERL_VERSION => '5.30.0',
   LICENSE          => "mit",
   dist=>{
     COMPRESS => "gzip -9f",
