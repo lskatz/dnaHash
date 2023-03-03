@@ -61,18 +61,22 @@ sub main{
 sub dnaHash{
   my($dna, $ntFlags, $posCoefficientOffset, $settings) = @_;
 
-  my @product = ();
-  #my $productSum = 0;
+  # Save all the nucleotides and their positions into an array
+  my @mapInput = ();
   my $length = length($dna);
   for(my $i=0; $i<$length; $i++){
     my $nt = substr($dna, $i, 1);
-    my $posCoefficient = $i + $posCoefficientOffset;
-    my $product = $$ntFlags{$nt} * $posCoefficient;
-    #$productSum += $product;
-    push(@product, $product);
+    push(@mapInput, {nt=>$nt, i=>Math::BigInt->new($i)});
   }
-  my $productSum = sum(@product);
-  return $productSum;
+  
+  # Make this go theoretically faster with a map block:
+  # Each product is the (pos + offsetCoefficient) * ntFlag.
+  my @product = map{
+    ($$_{i} + $posCoefficientOffset) * $$ntFlags{$$_{nt}}
+    } @mapInput;
+
+  # Return the sum of all products for the hash
+  return sum(@product);
 }
 
 # Create a hash of A=>1, C=>2, G=>4, T=>8,
@@ -90,7 +94,7 @@ sub ntFlags{
   # Apply increasing powers of 2 to each one
   my %flag;
   for(my $power=0; $power<@order; $power++){
-    $flag{$order[$power]} = 2**$power;
+    $flag{$order[$power]} = Math::BigInt->new(2**$power);
   }
   return \%flag;
 }
