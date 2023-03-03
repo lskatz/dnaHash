@@ -27,7 +27,7 @@ WriteMakefile1(
     'version'        => 0.77,
     'Getopt::Long'   => 0,
     'MIME::Base64'   => 0,
-    'bigint'         => 0,
+    'Math::BigInt'   => 0,
   },
   BUILD_REQUIRES => {
     'Test::More'     => 0.47,
