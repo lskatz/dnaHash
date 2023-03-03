@@ -38,7 +38,6 @@ sub main{
   # However for the sake of speed, I am lowering it to 100 for now.
   my $offset = $$settings{offset} || 100;
   my $posCoefficientOffset = Math::BigInt->new(2**$offset);
-  #my $posCoefficientOffset = 2**$offset;
 
   for my $fasta(@ARGV){
     open(my $seqFh, "<", "$fasta") or die "ERROR: could not open $fasta for reading: $!";
