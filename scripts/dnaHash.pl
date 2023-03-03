@@ -1,7 +1,7 @@
 #!/usr/bin/env perl 
 
 # Need new perl for bigint->to_hex
-use 5.30.0;
+#use 5.30.0;
 
 use warnings;
 use strict;

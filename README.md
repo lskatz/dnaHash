@@ -25,10 +25,10 @@ E.g., A=>1, ... T=>4, B=>8, D=>16,...Z=>33554432
 
 | Sequence | hash |
 |----------|------|
-| A        | 1    |
-| C        | 2    |
-| AT       | 17   |
-| ATG      | 29   |
+| A        | MTI2NzY1MDYwMDIyODIzMDAwMDAwMDAwMDAwMDAwMA== |
+| C        | MjUzNTMwMTIwMDQ1NjQ2MDAwMDAwMDAwMDAwMDAwMA== |
+| AT       | MTE0MDg4NTU0MDIwNTQwNzAwMDAwMDAwMDAwMDAwMDg= |
+| ATG      | MTY0Nzk0NTc4MDI5NjY5OTAwMDAwMDAwMDAwMDAwMTY= |
 
 # Advantages
 

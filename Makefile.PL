@@ -32,7 +32,7 @@ WriteMakefile1(
   BUILD_REQUIRES => {
     'Test::More'     => 0.47,
   },
-  MIN_PERL_VERSION => '5.30.0',
+  MIN_PERL_VERSION => '5.16.3',
   LICENSE          => "mit",
   dist=>{
     COMPRESS => "gzip -9f",
