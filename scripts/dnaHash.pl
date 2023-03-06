@@ -14,7 +14,9 @@ use Math::BigInt;
 use MIME::Base64;
 
 use version 0.77;
-our $VERSION = '0.2.4';
+our $VERSION = '0.3.0';
+
+use constant MAX_INT => Math::BigInt->new(1e36);
 
 local $0 = basename $0;
 sub logmsg{local $0=basename $0; print STDERR "$0: @_\n";}
@@ -79,7 +81,9 @@ sub dnaHash{
     } @mapInput;
 
   # Return the sum of all products for the hash
-  return sum(@product);
+  # but it can't go over MAX_INT, and so do a modulo
+  my $productSum = sum(@product) % MAX_INT;
+  return $productSum;
 }
 
 # Create a hash of A=>1, C=>2, G=>4, T=>8,
